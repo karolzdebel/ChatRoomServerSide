@@ -41,7 +41,8 @@ public class ChatRoomServerNetwork implements Runnable{
         //start listening for connections
         UserConnectionListener connectionListener = new UserConnectionListener(this);
         
-        this.run();
+        Thread thread = new Thread(this);
+        thread.start();
     }
     
     public ServerSocket getServerSocket(){

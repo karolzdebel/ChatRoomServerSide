@@ -23,7 +23,8 @@ public class UserActivityListener implements Runnable{
     public UserActivityListener(ChatRoomServerNetwork server, ObjectInputStream stream){
         this.server = server;
         this.in = stream;
-        this.run();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     @Override

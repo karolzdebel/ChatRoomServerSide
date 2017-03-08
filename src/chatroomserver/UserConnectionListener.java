@@ -24,7 +24,8 @@ public class UserConnectionListener implements Runnable{
     
     public UserConnectionListener(ChatRoomServerNetwork s){
         server = s;
-        this.run();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     @Override
