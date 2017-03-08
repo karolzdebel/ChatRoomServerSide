@@ -31,6 +31,8 @@ public class UserActivityListener implements Runnable{
         
         try{
             
+            System.out.println("Created activity listener for client, getting input stream\n");
+            
             ObjectInputStream in = new ObjectInputStream(
                 client.getInputStream());    
             

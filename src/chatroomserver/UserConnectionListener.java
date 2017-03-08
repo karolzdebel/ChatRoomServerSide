@@ -9,6 +9,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -36,6 +37,12 @@ public class UserConnectionListener implements Runnable{
                 //Listen for incoming connections
                 ServerSocket serverSocket = server.getServerSocket();
                 Socket clientSocket = serverSocket.accept();
+                
+                //Establishing input and output stream
+                 ObjectInputStream in = new ObjectInputStream(
+                    clientSocket.getInputStream());   
+                 ObjectOutputStream out = new ObjectOutputStream(
+                    clientSocket.getOutputStream());
 
                 System.out.println("Connection listener accepted client connection.");
 
