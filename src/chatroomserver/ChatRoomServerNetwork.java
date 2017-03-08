@@ -106,6 +106,8 @@ public class ChatRoomServerNetwork implements Runnable{
             //Activity to be handled
             UserActivity inActivity;
 
+            System.out.println("ChatRoomServerNetwork waiting for activity.");
+            
             //Wait for activity to be added
             synchronized(this){
                 while (activityQueue.isEmpty()){
@@ -119,6 +121,8 @@ public class ChatRoomServerNetwork implements Runnable{
                 //Dequeue first activity
                 inActivity = activityQueue.get(0);
                 activityQueue.remove(0);
+                System.out.println("ChatRoomServerNetwork received activity and dequeued.");
+                System.out.println("Activity type: "+inActivity.getActivityType());
             }
             
             

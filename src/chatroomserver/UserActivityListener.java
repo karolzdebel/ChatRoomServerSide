@@ -35,12 +35,16 @@ public class UserActivityListener implements Runnable{
             
             //Keep listening to object input stream for user input
             while(true){
-
+                
+                System.out.println("ActivityListener waiting for activity.");
+                
                 //blocks here till object is sent
                 UserActivity inActivity = (UserActivity)in.readObject();
+                    System.out.println("ActivityListener received activity.");
                 synchronized(server){
                     server.addActivityToQueue(inActivity);
                     server.notify();
+                    System.out.println("ActivityListener added to activity to queue and notified server.");
                 }
             }
         }

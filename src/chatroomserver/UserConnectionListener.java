@@ -30,10 +30,16 @@ public class UserConnectionListener implements Runnable{
         
         try{
             while (true){
+                System.out.println("Connection listener waiting for connection.");
+                
                 //Listen for incoming connections
                 ServerSocket serverSocket = server.getServerSocket();
                 Socket clientSocket = serverSocket.accept();
+
+                System.out.println("Connection listener accepted client connection.");
+
                 server.addClient(clientSocket);
+          
             }
         }
         catch(Exception e){
