@@ -5,6 +5,7 @@
  */
 package chatroomserver;
 
+import chatroom.UserActivity;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -44,11 +45,14 @@ public class UserConnectionListener implements Runnable{
                     clientSocket.getOutputStream());
                  ObjectInputStream in = new ObjectInputStream(
                     clientSocket.getInputStream());   
+                 
+                 //Wait for client to send username
+                 UserActivity firstActivity = (UserActivity)in.readObject();
 
 
                 System.out.println("Connection listener accepted client connection.");
 
-                server.addClient(out,in);
+                server.addClient(out,in, firstActivity);
           
             }
         }

@@ -49,7 +49,8 @@ public class ChatRoomServerNetwork implements Runnable{
         return serverSocket;
     }
     
-    public void addClient(ObjectOutputStream out,ObjectInputStream in){
+    public void addClient(ObjectOutputStream out,ObjectInputStream in,UserActivity a){
+        hashClientOut.put(a.getUser().getNickname(), out);
         arrClientOut.add(out);
         UserActivityListener activityListener = new UserActivityListener(this,in);
     }
