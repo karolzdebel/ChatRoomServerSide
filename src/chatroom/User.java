@@ -1,12 +1,14 @@
 
 package chatroom;
 
+import java.io.Serializable;
+
 /**
  * @author Karol Zdebel
  * 
  * Class responsible for storing user details and providing access to them.
  */
-public class User {
+public class User implements Serializable{
     
     private int age;    //age of user
     private char gender;    //user gender

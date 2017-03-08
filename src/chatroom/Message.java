@@ -1,6 +1,7 @@
 
 package chatroom;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  *
  * Class responsible for storing message information and functionality. 
  */
-public class Message {
+public class Message implements Serializable{
     
     private final Date dateSent;
     private final User author;
