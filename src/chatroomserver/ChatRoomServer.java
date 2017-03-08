@@ -17,8 +17,6 @@ public class ChatRoomServer {
      */
     public static void main(String[] args) {
         ChatRoomServerNetwork server = new ChatRoomServerNetwork();
-        
-        server.run();
     }
     
 }
