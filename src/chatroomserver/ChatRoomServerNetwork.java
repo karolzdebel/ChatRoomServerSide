@@ -98,7 +98,7 @@ public class ChatRoomServerNetwork implements Runnable{
     }
 
     public void addActivityToQueue(UserActivity activity){
-        activityQueue.add(activityQueue.size()-1, activity);
+        activityQueue.add(activityQueue.size(), activity);
     }
     
     @Override
