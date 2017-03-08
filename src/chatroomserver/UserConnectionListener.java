@@ -39,10 +39,11 @@ public class UserConnectionListener implements Runnable{
                 Socket clientSocket = serverSocket.accept();
                 
                 //Establishing input and output stream
-                 ObjectInputStream in = new ObjectInputStream(
-                    clientSocket.getInputStream());   
                  ObjectOutputStream out = new ObjectOutputStream(
                     clientSocket.getOutputStream());
+                 ObjectInputStream in = new ObjectInputStream(
+                    clientSocket.getInputStream());   
+
 
                 System.out.println("Connection listener accepted client connection.");
 
