@@ -2,6 +2,7 @@ package chatroom;
 
 
 import chatroom.*;
+import java.io.Serializable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,7 +14,7 @@ import chatroom.*;
  *
  * @author K
  */
-public class UserActivity {
+public class UserActivity implements Serializable {
     
     public static final String ACT_PRIV_MESSAGE = "ACT_PRIV_MESSAGE"; 
     public static final String ACT_PUB_MESSAGE = "ACT_PUB_MESSAGE"; 
