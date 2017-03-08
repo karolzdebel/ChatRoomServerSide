@@ -7,6 +7,7 @@ package chatroomserver;
 
 import chatroom.User;
 import chatroom.UserActivity;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -47,9 +48,9 @@ public class ChatRoomServerNetwork implements Runnable{
         return serverSocket;
     }
     
-    public void addClient(Socket socket){
+    public void addClient(Socket socket,ObjectInputStream in){
         arrClientSockets.add(socket);
-        UserActivityListener activityListener = new UserActivityListener(this,socket);
+        UserActivityListener activityListener = new UserActivityListener(this,in);
     }
 
     //Broadcast activity to all online users

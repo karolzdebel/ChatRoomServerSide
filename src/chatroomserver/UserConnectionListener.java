@@ -47,7 +47,7 @@ public class UserConnectionListener implements Runnable{
 
                 System.out.println("Connection listener accepted client connection.");
 
-                server.addClient(clientSocket);
+                server.addClient(clientSocket,in);
           
             }
         }

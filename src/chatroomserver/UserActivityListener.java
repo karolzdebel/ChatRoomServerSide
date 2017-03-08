@@ -18,11 +18,11 @@ import java.net.Socket;
 public class UserActivityListener implements Runnable{
     
     private final ChatRoomServerNetwork server;
-    private final Socket client;
+    private final ObjectInputStream in;
 
-    public UserActivityListener(ChatRoomServerNetwork server, Socket client){
+    public UserActivityListener(ChatRoomServerNetwork server, ObjectInputStream stream){
         this.server = server;
-        this.client = client;
+        this.in = stream;
         this.run();
     }
 
@@ -32,9 +32,6 @@ public class UserActivityListener implements Runnable{
         try{
             
             System.out.println("Created activity listener for client, getting input stream\n");
-            
-            ObjectInputStream in = new ObjectInputStream(
-                client.getInputStream());    
             
             //Keep listening to object input stream for user input
             while(true){
@@ -52,7 +49,7 @@ public class UserActivityListener implements Runnable{
             }
         }
         catch(Exception e){
-            System.err.println("error:"+e.getMessage());
+            System.err.println("(UserActivityListener)error:"+e.getMessage());
         }
     }
 }
