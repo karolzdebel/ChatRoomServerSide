@@ -84,4 +84,16 @@ public class UserActivity implements Serializable {
     public boolean isUserLeave(){
         return activityType.equals(ACT_USER_LEAVE);
     }
+    
+    public String toString(){
+        String string = activityType;
+        
+        if (activityType.equals(ACT_USER_JOIN) || activityType.equals(ACT_USER_LEAVE)){
+            string+=" user_nick_name:"+user.getNickname()+ "user_age:"+user.getAge();
+        }else{
+            string+=" message:"+message.getContent();
+        }
+        
+        return string;
+    }
 }

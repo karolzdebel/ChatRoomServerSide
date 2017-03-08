@@ -20,8 +20,8 @@ import java.util.Hashtable;
  */
 public class ChatRoomServerNetwork implements Runnable{
     
-    private final Hashtable<String,Socket> hashClientSockets;
-    private final ArrayList<Socket> arrClientSockets;
+    private final Hashtable<String,ObjectOutputStream> hashClientOut;
+    private final ArrayList<ObjectOutputStream> arrClientOut;
     private final ArrayList<UserActivity> activityQueue;
     private static ServerSocket serverSocket;
 
@@ -34,8 +34,8 @@ public class ChatRoomServerNetwork implements Runnable{
             System.err.print(e.getMessage());
         }
         
-        hashClientSockets = new Hashtable<>();
-        arrClientSockets = new ArrayList<>();
+        hashClientOut = new Hashtable<>();
+        arrClientOut = new ArrayList<>();
         activityQueue = new ArrayList<>();
 
         //start listening for connections
@@ -49,18 +49,16 @@ public class ChatRoomServerNetwork implements Runnable{
         return serverSocket;
     }
     
-    public void addClient(Socket socket,ObjectInputStream in){
-        arrClientSockets.add(socket);
+    public void addClient(ObjectOutputStream out,ObjectInputStream in){
+        arrClientOut.add(out);
         UserActivityListener activityListener = new UserActivityListener(this,in);
     }
 
     //Broadcast activity to all online users
     public void broadcastActivity(UserActivity activity){
         try{
-            for (Socket s: arrClientSockets){
-                ObjectOutputStream out =
-                        new ObjectOutputStream(s.getOutputStream());
-                out.writeObject(activity);
+            for (ObjectOutputStream o: arrClientOut){
+                o.writeObject(activity);
             }    
         }catch(Exception e){
             System.err.print("Error broadcasting activity: "+e.getMessage());
@@ -71,9 +69,8 @@ public class ChatRoomServerNetwork implements Runnable{
     //Send private message
     public void sendPrivateMessage(UserActivity activity){
         try{
-            Socket recipient = hashClientSockets.get(activity.getUser().getNickname());
             ObjectOutputStream out =
-                new ObjectOutputStream(recipient.getOutputStream());
+                hashClientOut.get(activity.getUser().getNickname());
             out.writeObject(activity);
    
         }
@@ -82,20 +79,21 @@ public class ChatRoomServerNetwork implements Runnable{
         }
     }
     
-    public ArrayList<Socket> getSockets(){
-        return arrClientSockets;
+    public ArrayList<ObjectOutputStream> getOuts(){
+        return arrClientOut;
     }
     
     
     //Add user to user list, then broadcast activity
-    public void userJoin(UserActivity activity, Socket socket){
-        hashClientSockets.put(activity.getUser().getNickname(),socket);
+    public void userJoin(UserActivity activity, ObjectOutputStream out){
+        System.out.println("userJoin(): activity is "+activity.toString());
+        hashClientOut.put(activity.getUser().getNickname(),out);
     }
     
     //Remove user from user list, then broadcast activity
-    public void userLeave(UserActivity activity, Socket socket){
-        arrClientSockets.remove(socket);
-        hashClientSockets.remove(activity.getUser().getNickname());
+    public void userLeave(UserActivity activity, ObjectOutputStream out){
+        arrClientOut.remove(out);
+        hashClientOut.remove(activity.getUser().getNickname());
     }
 
     public void addActivityToQueue(UserActivity activity){
@@ -139,11 +137,11 @@ public class ChatRoomServerNetwork implements Runnable{
             }
             //Broadcast that user joined
             else if(inActivity.isUserJoin()){
-                userJoin(inActivity,hashClientSockets.get(inActivity.getUser().getNickname()));
+                userJoin(inActivity,hashClientOut.get(inActivity.getUser().getNickname()));
             }
             //Broadcast that user left
             else if(inActivity.isUserLeave()){
-                userLeave(inActivity,hashClientSockets.get(inActivity.getUser().getNickname()));
+                userLeave(inActivity,hashClientOut.get(inActivity.getUser().getNickname()));
             }else{
                 System.err.println("Error, unreachable statement!!");
             }
