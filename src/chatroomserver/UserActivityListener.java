@@ -40,12 +40,12 @@ public class UserActivityListener implements Runnable{
                 
                 //blocks here till object is sent
                 UserActivity inActivity = (UserActivity)in.readObject();
-                    System.out.println("ActivityListener received activity.");
-                synchronized(server){
+                System.out.println("ActivityListener received activity.");
+                //synchronized(server){
                     server.addActivityToQueue(inActivity);
                     server.notify();
                     System.out.println("ActivityListener added to activity to queue and notified server.");
-                }
+               // }
             }
         }
         catch(Exception e){
