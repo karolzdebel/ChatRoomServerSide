@@ -15,10 +15,10 @@ import chatroom.*;
  */
 public class UserActivity {
     
-    public final String ACT_PRIV_MESSAGE = "ACT_PRIV_MESSAGE"; 
-    public final String ACT_PUB_MESSAGE = "ACT_PUB_MESSAGE"; 
-    public final String ACT_USER_LEAVE = "ACT_USER_LEAVE"; 
-    public final String ACT_USER_JOIN = "ACT_USER_JOIN";
+    public static final String ACT_PRIV_MESSAGE = "ACT_PRIV_MESSAGE"; 
+    public static final String ACT_PUB_MESSAGE = "ACT_PUB_MESSAGE"; 
+    public static final String ACT_USER_LEAVE = "ACT_USER_LEAVE"; 
+    public static final String ACT_USER_JOIN = "ACT_USER_JOIN";
     
     private final String activityType;
     private final User user;
