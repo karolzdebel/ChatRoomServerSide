@@ -23,6 +23,7 @@ public class UserActivityListener implements Runnable{
     public UserActivityListener(ChatRoomServerNetwork server, Socket client){
         this.server = server;
         this.client = client;
+        this.run();
     }
 
     @Override

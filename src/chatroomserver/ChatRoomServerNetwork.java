@@ -48,7 +48,6 @@ public class ChatRoomServerNetwork implements Runnable{
     public void addClient(Socket socket){
         arrClientSockets.add(socket);
         UserActivityListener activityListener = new UserActivityListener(this,socket);
-        activityListener.run();
     }
 
     //Broadcast activity to all online users

@@ -23,6 +23,7 @@ public class UserConnectionListener implements Runnable{
     
     public UserConnectionListener(ChatRoomServerNetwork s){
         server = s;
+        this.run();
     }
 
     @Override
