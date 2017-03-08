@@ -36,6 +36,9 @@ public class ChatRoomServerNetwork implements Runnable{
         hashClientSockets = new Hashtable<>();
         arrClientSockets = new ArrayList<>();
         activityQueue = new ArrayList<>();
+
+        //start listening for connections
+        UserConnectionListener connectionListener = new UserConnectionListener(this);
     }
     
     public ServerSocket getServerSocket(){
