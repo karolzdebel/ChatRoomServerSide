@@ -50,10 +50,19 @@ public class ChatRoomServerNetwork implements Runnable{
     }
     
     public void addClient(ObjectOutputStream out,ObjectInputStream in,UserActivity a){
+        UserActivityListener activityListener = new UserActivityListener(this,in);
         hashClientOut.put(a.getUser().getNickname(), out);
         arrClientOut.add(out);
-        userJoin(a,out);
-        UserActivityListener activityListener = new UserActivityListener(this,in);
+        
+        //Broadcast that user joined
+        try{
+            for (ObjectOutputStream o: arrClientOut){
+                o.writeObject(a);
+            }    
+        }catch(Exception e){
+            System.err.print("addClient() err: "+e.getMessage());
+        }
+           
     }
 
     //Broadcast activity to all online users
@@ -85,17 +94,19 @@ public class ChatRoomServerNetwork implements Runnable{
         return arrClientOut;
     }
     
-    
-    //Add user to user list, then broadcast activity
-    public void userJoin(UserActivity activity, ObjectOutputStream out){
-        System.out.println("userJoin(): activity is "+activity.toString());
-        hashClientOut.put(activity.getUser().getNickname(),out);
-    }
-    
     //Remove user from user list, then broadcast activity
     public void userLeave(UserActivity activity, ObjectOutputStream out){
         arrClientOut.remove(out);
         hashClientOut.remove(activity.getUser().getNickname());
+        
+        //Broadcast that user left
+        for (ObjectOutputStream o: arrClientOut){
+            try{
+                o.writeObject(activity);
+            }catch(Exception e){
+                System.err.print("userLeave() err: "+e.getMessage());
+            }
+        }
     }
 
     public void addActivityToQueue(UserActivity activity){
@@ -136,10 +147,6 @@ public class ChatRoomServerNetwork implements Runnable{
             //Broadcast public message
             else if(inActivity.isPublicMessage()){
                 broadcastActivity(inActivity);
-            }
-            //Broadcast that user joined
-            else if(inActivity.isUserJoin()){
-                userJoin(inActivity,hashClientOut.get(inActivity.getUser().getNickname()));
             }
             //Broadcast that user left
             else if(inActivity.isUserLeave()){
