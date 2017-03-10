@@ -24,6 +24,7 @@ public class ChatRoomServerNetwork implements Runnable{
     private final ArrayList<ObjectOutputStream> arrClientOut;
     private final ArrayList<UserActivity> activityQueue;
     private static ServerSocket serverSocket;
+    private final ArrayList<User> userList;
 
     public ChatRoomServerNetwork(){
         
@@ -37,7 +38,8 @@ public class ChatRoomServerNetwork implements Runnable{
         hashClientOut = new Hashtable<>();
         arrClientOut = new ArrayList<>();
         activityQueue = new ArrayList<>();
-
+        userList = new ArrayList<>();
+        
         //start listening for connections
         UserConnectionListener connectionListener = new UserConnectionListener(this);
         
@@ -53,6 +55,7 @@ public class ChatRoomServerNetwork implements Runnable{
         UserActivityListener activityListener = new UserActivityListener(this,in);
         hashClientOut.put(a.getUser().getNickname(), out);
         arrClientOut.add(out);
+        userList.add(a.getUser());
         
         //Broadcast that user joined
         try{
@@ -65,6 +68,16 @@ public class ChatRoomServerNetwork implements Runnable{
            
     }
 
+    public void sendUsers(ObjectOutputStream out){
+        //Send users to output stream
+        UserActivity a = new UserActivity(userList);
+        try{
+            out.writeObject(a);
+        }catch(Exception e){
+            System.err.print("sendUsers() Error: "+e.getMessage());
+        }
+    }
+    
     //Broadcast activity to all online users
     public void broadcastActivity(UserActivity activity){
         try{
@@ -98,6 +111,7 @@ public class ChatRoomServerNetwork implements Runnable{
     public void userLeave(UserActivity activity, ObjectOutputStream out){
         arrClientOut.remove(out);
         hashClientOut.remove(activity.getUser().getNickname());
+        userList.remove(activity.getUser());
         
         //Broadcast that user left
         for (ObjectOutputStream o: arrClientOut){
