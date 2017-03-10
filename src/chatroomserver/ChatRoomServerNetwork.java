@@ -70,7 +70,7 @@ public class ChatRoomServerNetwork implements Runnable{
 
     public void sendUsers(ObjectOutputStream out){
         //Send users to output stream
-        UserActivity a = new UserActivity(userList,true,true);
+        UserActivity a = new UserActivity(userList);
         try{
             out.writeObject(a);
         }catch(Exception e){
