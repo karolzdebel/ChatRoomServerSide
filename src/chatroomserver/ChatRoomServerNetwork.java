@@ -54,32 +54,29 @@ public class ChatRoomServerNetwork implements Runnable{
     
     public void addClient(ObjectOutputStream out,ObjectInputStream in,UserActivity a){
         UserActivityListener activityListener = new UserActivityListener(this,in);
-        hashClientOut.put(a.getUser().getNickname(), out);
-        arrClientOut.add(out);
         userList.add(a.getUser());
 
         
-        //Broadcast that user joined
+        //Broadcast that user joined to current chatlist before adding user
         try{
             for (ObjectOutputStream o: arrClientOut){
-                if (!o.equals(out)){
-                    o.writeObject(a);
-                }
-                else{
-                    o.writeObject(new UserActivity(userList));
-                }
+               o.writeObject(a);
             }    
+            
+            //send new joined user, userlist
+            out.writeObject(new UserActivity(userList));
+
         }catch(Exception e){
             System.err.print("addClient() err: "+e.getMessage());
         }
-           
-    }
-
-    public void addSendUsers(ObjectOutputStream out){
-        //Send users to output stream
-        outUserListQueue.add(out);
         
-        addActivityToQueue(a);
+        //Add client to chat list
+        hashClientOut.put(a.getUser().getNickname(), out);
+        arrClientOut.add(out);
+        
+        //Send new joined user userlist
+
+           
     }
     
     public void sendUsers(UserActivity a){
