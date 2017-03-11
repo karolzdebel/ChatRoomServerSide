@@ -57,11 +57,17 @@ public class ChatRoomServerNetwork implements Runnable{
         hashClientOut.put(a.getUser().getNickname(), out);
         arrClientOut.add(out);
         userList.add(a.getUser());
+
         
         //Broadcast that user joined
         try{
             for (ObjectOutputStream o: arrClientOut){
-                o.writeObject(a);
+                if (!o.equals(out)){
+                    o.writeObject(a);
+                }
+                else{
+                    o.writeObject(new UserActivity(userList));
+                }
             }    
         }catch(Exception e){
             System.err.print("addClient() err: "+e.getMessage());
@@ -72,7 +78,7 @@ public class ChatRoomServerNetwork implements Runnable{
     public void addSendUsers(ObjectOutputStream out){
         //Send users to output stream
         outUserListQueue.add(out);
-        UserActivity a = new UserActivity(userList);
+        
         addActivityToQueue(a);
     }
     
