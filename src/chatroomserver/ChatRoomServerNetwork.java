@@ -30,7 +30,7 @@ public class ChatRoomServerNetwork implements Runnable{
         
         //Create server socket
         try{
-            serverSocket = new ServerSocket(49152);
+            serverSocket = new ServerSocket(49153);
         }catch(Exception e){
             System.err.print(e.getMessage());
         }
