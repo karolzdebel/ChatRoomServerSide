@@ -199,7 +199,7 @@ public class ChatRoomServerNetwork implements Runnable{
                 sendPermission(inActivity);
             }
             else{
-                System.err.println("Error, unreachable statement!!");
+                System.err.println("Error, unreachable statement!!, inActivity: "+inActivity.toString());
             }
             
         }
