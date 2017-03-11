@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
- *
- * @author K
+ * Class defines server side data and responds to user activity listeners
+ * @author Karol Zdebel
  */
 public class ChatRoomServerNetwork implements Runnable{
     

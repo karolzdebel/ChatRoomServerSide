@@ -6,19 +6,15 @@
 package chatroomserver;
 
 import chatroom.UserActivity;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- *  Liten for incoming connections and spawn client threads
+ *  Listen for incoming connections and spawn client threads accordingly
  * 
- * @author K
+ * @author Karol Zdebel
  */
 public class UserConnectionListener implements Runnable{
     private ChatRoomServerNetwork server;
@@ -48,9 +44,6 @@ public class UserConnectionListener implements Runnable{
                  
                  //Wait for client to send username
                  UserActivity firstActivity = (UserActivity)in.readObject();
-
-
-                System.out.println("Connection listener accepted client connection.");
 
                 server.addClient(out,in, firstActivity);
           

@@ -12,11 +12,13 @@ import java.util.ArrayList;
  */
 
 /**
- *
- * @author K
+ * Stores data about a particular activity
+ * 
+ * @author Karol Zdebel
  */
 public class UserActivity implements Serializable {
     
+    //Type of activity
     public static final String ACT_PRIV_MESSAGE = "ACT_PRIV_MESSAGE"; 
     public static final String ACT_PUB_MESSAGE = "ACT_PUB_MESSAGE"; 
     public static final String ACT_USER_LEAVE = "ACT_USER_LEAVE"; 
@@ -44,6 +46,7 @@ public class UserActivity implements Serializable {
         this.permTo = null;
     }
     
+    //Construct a message activity
     public UserActivity(Message message){
         if (message.isPrivate()){
             activityType = ACT_PRIV_MESSAGE;
@@ -60,6 +63,7 @@ public class UserActivity implements Serializable {
         
     }
     
+    //Construct a permission activity
     public UserActivity(User givenFrom, User givenTo){
         this.permFrom = givenFrom;
         this.permTo = givenTo;
@@ -70,6 +74,7 @@ public class UserActivity implements Serializable {
         this.activityType = ACT_PERM_GIVE;
     }
     
+    //Construct a leave activity
     public UserActivity(User user, String activityType){
         if (activityType.equals(ACT_USER_LEAVE)){
             this.activityType = ACT_USER_LEAVE;
@@ -91,6 +96,7 @@ public class UserActivity implements Serializable {
         this.permTo = null;
     }
     
+    //Get the activity type
     public String getActivityType(){
         return activityType;
     }

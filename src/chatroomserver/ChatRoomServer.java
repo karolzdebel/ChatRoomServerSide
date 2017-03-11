@@ -6,8 +6,8 @@
 package chatroomserver;
 
 /**
- *
- * @author K
+ * Execute server side code
+ * @author Karol Zdebel
  */
 public class ChatRoomServer {
     
