@@ -105,9 +105,20 @@ public class ChatRoomServerNetwork implements Runnable{
         try{
             ObjectOutputStream out =
                 hashClientOut.get(activity.getMessage().getRecipient().getNickname());
-            System.out.print("Got outstream of private message receiver!");
             out.writeObject(activity);
-            System.out.print("Sent private message to receiver!");
+
+        }
+        catch(Exception e){
+                System.err.print("Error broadcasting activity: "+e.getMessage());
+                e.printStackTrace();
+        }
+    }
+    
+    public void sendPermission(UserActivity activity){
+        try{
+            ObjectOutputStream out =
+                hashClientOut.get(activity.getPermTo().getNickname());
+            out.writeObject(activity);
 
         }
         catch(Exception e){
@@ -179,8 +190,13 @@ public class ChatRoomServerNetwork implements Runnable{
             else if(inActivity.isUserLeave()){
                 userLeave(inActivity,hashClientOut.get(inActivity.getUser().getNickname()));
             }
+            //Send user list to other other
             else if (inActivity.isUserList()){
                 sendUsers(inActivity);
+            }
+            //Send other user permission
+            else if (inActivity.isPermGive()){
+                sendPermission(inActivity);
             }
             else{
                 System.err.println("Error, unreachable statement!!");
