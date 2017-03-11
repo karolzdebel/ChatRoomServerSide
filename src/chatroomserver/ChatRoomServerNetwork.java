@@ -24,6 +24,7 @@ public class ChatRoomServerNetwork implements Runnable{
     private final ArrayList<UserActivity> activityQueue;
     private static ServerSocket serverSocket;
     private final ArrayList<User> userList;
+    private final ArrayList<ObjectOutputStream> outUserListQueue;
 
     public ChatRoomServerNetwork(){
         
@@ -38,6 +39,7 @@ public class ChatRoomServerNetwork implements Runnable{
         arrClientOut = new ArrayList<>();
         activityQueue = new ArrayList<>();
         userList = new ArrayList<>();
+        outUserListQueue = new ArrayList<>();
         
         //start listening for connections
         UserConnectionListener connectionListener = new UserConnectionListener(this);
@@ -67,11 +69,17 @@ public class ChatRoomServerNetwork implements Runnable{
            
     }
 
-    public void sendUsers(ObjectOutputStream out){
+    public void addSendUsers(ObjectOutputStream out){
         //Send users to output stream
+        outUserListQueue.add(out);
         UserActivity a = new UserActivity(userList);
+        addActivityToQueue(a);
+    }
+    
+    public void sendUsers(UserActivity a){
+        ObjectOutputStream o = outUserListQueue.get(0);
         try{
-            out.writeObject(a);
+            o.writeObject(a);
         }catch(Exception e){
             System.err.print("sendUsers() Error: "+e.getMessage());
         }
@@ -164,7 +172,11 @@ public class ChatRoomServerNetwork implements Runnable{
             //Broadcast that user left
             else if(inActivity.isUserLeave()){
                 userLeave(inActivity,hashClientOut.get(inActivity.getUser().getNickname()));
-            }else{
+            }
+            else if (inActivity.isUserList()){
+                sendUsers(inActivity);
+            }
+            else{
                 System.err.println("Error, unreachable statement!!");
             }
             

@@ -55,7 +55,7 @@ public class UserConnectionListener implements Runnable{
                 server.addClient(out,in, firstActivity);
                 
                 //Send client the list of users for user panel
-                server.sendUsers(out);
+                server.addSendUsers(out);
           
             }
         }
