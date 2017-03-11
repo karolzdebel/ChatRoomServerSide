@@ -105,11 +105,14 @@ public class ChatRoomServerNetwork implements Runnable{
         try{
             ObjectOutputStream out =
                 hashClientOut.get(activity.getUser().getNickname());
+            System.out.print("Got outstream of private message receiver!");
             out.writeObject(activity);
-   
+            System.out.print("Sent private message to receiver!");
+
         }
         catch(Exception e){
                 System.err.print("Error broadcasting activity: "+e.getMessage());
+                e.printStackTrace();
         }
     }
     
